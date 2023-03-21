@@ -2,6 +2,7 @@
 	/**
 	 * main - print _putchar
 	 * is written by mbah
+	 * Description: no
 	 * Return: 0
 	 */
 
