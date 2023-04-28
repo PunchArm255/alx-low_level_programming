@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 /**
-  * free_list - frees a list_t list
+  * f_list - frees a list_t list
   * @head: head node
   * Return: void
   */
-void free_list(list_t *head)
+void f_list(list_t *head)
 {
 	list_t *current, *next;
 
