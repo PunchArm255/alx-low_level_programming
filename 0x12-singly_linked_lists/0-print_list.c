@@ -3,11 +3,11 @@
 #include <stddef.h>
 
 /**
-  * print_list - print elements of list_t list
+  * p_list - print elements of list_t list
   * @h: head node
   * Return: number of nodes
   */
-size_t print_list(const list_t *h)
+size_t p_list(const list_t *h)
 {
 	unsigned int size;
 	char *s;
