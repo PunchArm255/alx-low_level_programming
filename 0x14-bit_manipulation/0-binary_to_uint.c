@@ -4,7 +4,7 @@
  * binary_to_uint - converts binary number to unsigned int
  * @b: string containing 1's and 0's (binary number)
  *
- * Return: the number converted (Success) | 0 (Failure)
+ * Return: the converted number (Success) | 0 (Failure)
  */
 unsigned int binary_to_uint(const char *b)
 {
@@ -29,5 +29,5 @@ unsigned int binary_to_uint(const char *b)
 		uint += (b[i--] - '0') << (pow++);
 	}
 
-	return (uint);
+	return uint;
 }
