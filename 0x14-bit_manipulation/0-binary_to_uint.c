@@ -29,5 +29,5 @@ unsigned int binary_to_uint(const char *b)
 		uint += (b[i--] - '0') << (pow++);
 	}
 
-	return uint;
+	return (uint);
 }
