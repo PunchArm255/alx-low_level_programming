@@ -1,38 +1,43 @@
 #include "main.h"
 
 /**
- * create_file - creates a file
- * @filename: filename.
- * @text_content: content writed in the file.
+ * read_textfile - reads and prints some mf text from a file to stdout
+ * @filename: el name of the fucking file
+ * @letters: number of lettorrr to be read and printed queen
  *
- * Return: 1 if it success. -1 if it fails.
+ * Return: actual numbah of r n p letters
  */
-int create_file(const char *filename, char *text_content)
+ssize_t read_textfile(const char *filename, size_t letters)
 {
-    int fd;
-    int nletters;
-    int rwr;
+	int fd;
+	char *s;
+	ssize_t rsize, wsize;
 
-    if (!filename)
-        return (-1);
+	if (!filename)
+		return (0);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (0);
 
-    fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	s = malloc(sizeof(char) * letters);
+	if (!s)
+		return (0);
+	rsize = read(fd, s, letters);
+	if (rsize < 0)
+	{
+		free(s);
+		return (0);
+	}
 
-    if (fd == -1)
-        return (-1);
+	s[rsize] = '\0';
+	close(fd);
 
-    if (!text_content)
-        text_content = "";
-
-    for (nletters = 0; text_content[nletters]; nletters++)
-        ;
-
-    rwr = write(fd, text_content, nletters);
-
-    if (rwr == -1)
-        return (-1);
-
-    close(fd);
-
-    return (1);
+	wsize = write(STDOUT_FILENO, s, rsize);
+	if (wsize < 0)
+	{
+		free(s);
+		return (0);
+	}
+	free(s);
+	return (wsize);
 }
