@@ -1,43 +1,38 @@
 #include "main.h"
 
 /**
- * read_textfile - read print text from a file to stdout hopefully
- * @filename: the name of the fucking file lmao
- * @letters: number of letters to be deadass read and printed broskiiiii
+ * create_file - creates a file
+ * @filename: filename.
+ * @text_content: content writed in the file.
  *
- * Return: actual numbaaah of them read and printed letters like fr fr bruh
+ * Return: 1 if it success. -1 if it fails.
  */
-ssize_t read_textfile(const char *filename, size_t letters)
+int create_file(const char *filename, char *text_content)
 {
-	int fd;
-	char *s;
-	ssize_t rsize, wsize;
+    int fd;
+    int nletters;
+    int rwr;
 
-	if (!filename)
-		return (0);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (0);
+    if (!filename)
+        return (-1);
 
-	s = malloc(sizeof(char) * letters);
-	if (!s)
-		return (0);
-	rsize = read(fd, s, letters);
-	if (rsize < 0)
-	{
-		free(s);
-		return (0);
-	}
+    fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 
-	s[rsize] = '\0';
-	close(fd);
+    if (fd == -1)
+        return (-1);
 
-	wsize = write(STDOUT_FILENO, s, rsize);
-	if (wsize < 0)
-	{
-		free(s);
-		return (0);
-	}
-	free(s);
-	return (wsize);
+    if (!text_content)
+        text_content = "";
+
+    for (nletters = 0; text_content[nletters]; nletters++)
+        ;
+
+    rwr = write(fd, text_content, nletters);
+
+    if (rwr == -1)
+        return (-1);
+
+    close(fd);
+
+    return (1);
 }
