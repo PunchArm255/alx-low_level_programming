@@ -1,50 +1,54 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "hash_tables.h"
 
 /**
- * hash_table_set - adds item in hash table
+ * hash_table_set - add element to tabla
+ * @ht: tabla
+ * @key: given kii
+ * @value: given value
  *
- * @ht: el tabla
- *
- * @key: key of item
- *
- * @value: value of item
- *
- * Return: 1 for success 0 for failure
+ * Return: 1 (Success) | 0 (Failure)
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-    unsigned long int i;
-    hash_node_t *new, *tmp;
+	unsigned long int index;
+	hash_node_t *node;
+	char *dup_value, *dup_key;
 
-    if (!ht || !key || !(*key))
-        return (0);
-    new = malloc(sizeof(*new));
-    if (!new)
-        return (0);
-    new->key = strdup((char *)key);
-    new->value = strdup(value);
-    new->next = NULL;
-    i = key_index((unsigned char *)key, ht->size);
-    if (!(ht->array[i]))
-    {
-        ht->array[i] = new;
-    }
-    else
-    {
-        tmp = ht->array[i];
-        while (tmp && strcmp(tmp->key, new->key) != 0)
-            tmp = tmp->next;
-        if (tmp)
-        {
-            free(tmp->value);
-            tmp->value = new->value;
-            free(new->key);
-            free(new);
-            return (1);
-        }
-        tmp = ht->array[i];
-        new->next = tmp;
-        ht->array[i] = new;
-    }
-    return (1);
+	if (!ht || (!key || !(*key)) || !value)
+		return (0);
+	index = key_index((unsigned char *)key, ht->size);
+
+	dup_value = strdup(value);
+	if (!dup_value)
+		return (0);
+
+	node = ht->array[index];
+	while (node)
+	{
+		if (!strcmp(node->key, key))
+		{
+			free(node->value);
+			node->value = dup_value;
+			return (1);
+		}
+		node = node->next;
+	}
+
+	dup_key = strdup(key);
+	if (!dup_key)
+	{
+		free(dup_value);
+		return (0);
+	}
+
+	node = malloc(sizeof(*node));
+	if (!node)
+		return (0);
+	node->key = dup_key, node->value = dup_value;
+	node->next = ht->array[index];
+	ht->array[index] = node;
+	return (1);
 }
